@@ -1,0 +1,21 @@
+{
+	"packageName": "Contact Sensor Groups",
+	"minimumHEVersion": "2.1.9",
+	"author": "Dominick Meglio",
+	"version": "1.0",
+	"dateReleased": "2020-04-04",
+	"apps" : [
+		{
+			"id" : "807bd030-9c95-4f1f-8787-fd9fc486496f",
+			"name": "Contact Sensor Groups",
+			"location": "https://raw.githubusercontent.com/dcmeglio/hubitat-contactgroups/master/apps/Contact_Sensor_Groups.groovy",
+			"required": true
+		},
+		{
+			"id" : "2e879e0e-9186-48bc-8891-a174335be0cf",
+			"name": "Contact Sensor Group Child",
+			"location": "https://raw.githubusercontent.com/dcmeglio/hubitat-contactgroups/master/apps/Contact_Sensor_Group_Child.groovy",
+			"required": true
+		}
+	]
+}
