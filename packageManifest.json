@@ -1,5 +1,6 @@
 {
 	"packageName": "Contact Sensor Groups",
+	"packageId": "60495e20-b090-4c83-af96-f3ddefea2849",
 	"minimumHEVersion": "2.1.9",
 	"author": "Dominick Meglio",
 	"version": "1.0",
