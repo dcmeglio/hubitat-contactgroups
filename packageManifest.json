@@ -2,8 +2,9 @@
 	"packageName": "Contact Sensor Groups",
 	"minimumHEVersion": "2.1.9",
 	"author": "Dominick Meglio",
-	"version": "1.1",
+	"version": "1.2.0",
 	"dateReleased": "2020-04-04",
+	"releaseNotes": "Initial release",
 	"apps" : [
 		{
 			"id" : "807bd030-9c95-4f1f-8787-fd9fc486496f",
