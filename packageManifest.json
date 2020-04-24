@@ -2,9 +2,10 @@
 	"packageName": "Contact Sensor Groups",
 	"minimumHEVersion": "2.1.9",
 	"author": "Dominick Meglio",
-	"version": "1.2.0",
-	"dateReleased": "2020-04-04",
+	"version": "1.2.1",
+	"dateReleased": "2020-04-23",
 	"releaseNotes": "Initial release",
+	"documentationLink": "https://github.com/dcmeglio/hubitat-contactgroups/blob/master/README.md",
 	"apps" : [
 		{
 			"id" : "807bd030-9c95-4f1f-8787-fd9fc486496f",
