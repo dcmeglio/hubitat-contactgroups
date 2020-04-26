@@ -1,16 +1,22 @@
 {
-	"packageName": "Contact Sensor Groups",
+	"packageName": "Device Groups",
 	"minimumHEVersion": "2.1.9",
 	"author": "Dominick Meglio",
 	"version": "1.2.1",
 	"dateReleased": "2020-04-23",
-	"releaseNotes": "Initial release",
+	"releaseNotes": "Renamed to Device Groups and added a new grouping for locks.",
 	"documentationLink": "https://github.com/dcmeglio/hubitat-contactgroups/blob/master/README.md",
 	"apps" : [
 		{
 			"id" : "807bd030-9c95-4f1f-8787-fd9fc486496f",
-			"name": "Contact Sensor Groups",
+			"name": "Device Groups",
 			"namespace": "dcm.contactgroups",
+			"alternateNames" : [
+				{
+					"name": "Contact Sensor Groups",
+					"namespace": "dcm.contactgroups"
+				}
+			],
 			"location": "https://raw.githubusercontent.com/dcmeglio/hubitat-contactgroups/master/apps/Contact_Sensor_Groups.groovy",
 			"required": true
 		},
@@ -19,6 +25,13 @@
 			"name": "Contact Sensor Group Child",
 			"namespace": "dcm.contactgroups",
 			"location": "https://raw.githubusercontent.com/dcmeglio/hubitat-contactgroups/master/apps/Contact_Sensor_Group_Child.groovy",
+			"required": true
+		},
+		{
+			"id" : "a6efb33e-5605-474d-9e51-1220410f4cf5",
+			"name": "Lock Group Child",
+			"namespace": "dcm.contactgroups",
+			"location": "https://raw.githubusercontent.com/dcmeglio/hubitat-contactgroups/master/apps/Lock_Group_Child.groovy",
 			"required": true
 		}
 	]

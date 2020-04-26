@@ -1,6 +1,6 @@
 /**
  *
- *  Contact Sensor Groups
+ *  Lock Groups
  *
  *  Copyright 2020 Dominick Meglio
  *
@@ -9,10 +9,10 @@
  */
  
 definition(
-    name: "Contact Sensor Group Child",
+    name: "Lock Group Child",
     namespace: "dcm.contactgroups",
     author: "Dominick Meglio",
-    description: "Allows you to group contact sensors together into a single virtual device",
+    description: "Allows you to group locks together into a single virtual device",
     category: "My Apps",
 	parent: "dcm.contactgroups:Device Groups",
     iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
@@ -21,14 +21,14 @@ definition(
 	documentationLink: "https://github.com/dcmeglio/hubitat-contactgroups/blob/master/README.md")
 
 preferences {
-    page(name: "prefContactGroup")
+    page(name: "prefDeviceGroup")
 	page(name: "prefSettings")
 }
 
-def prefContactGroup() {
-	return dynamicPage(name: "prefContactGroup", title: "Create a Contact Group", nextPage: "prefSettings", uninstall:false, install: false) {
+def prefDeviceGroup() {
+	return dynamicPage(name: "prefDeviceGroup", title: "Create a Lock Group", nextPage: "prefSettings", uninstall:false, install: false) {
 		section {
-            label title: "Enter a name for this child app. This will create a virtual contact sensor which reports the open/closed status based on the sensors you select.", required:true
+            label title: "Enter a name for this child app. This will create a virtual lock which reports the locked/unlocked status based on the locks you select.", required:true
 		}
 		displayFooter()
 	}
@@ -38,9 +38,9 @@ def prefSettings() {
 	createOrUpdateChildDevice()
     return dynamicPage(name: "prefSettings", title: "", install: true, uninstall: true) {
 		section {
-			paragraph "Please choose which sensors to include in this group. When all the sensors are closed, the virtual device is closed. If any sensor is open, the virtual device is open."
+			paragraph "unlocked choose which locks to include in this group. When all the locks are locked, the virtual device is locked. If any lock is unlocked, the virtual device is open. Locking or unlocking the virtual device will lock or unlock all of the devices in the group."
 
-			input "contactSensors", "capability.contactSensor", title: "Contact sensors to monitor", multiple:true, required:true
+			input "locks", "capability.lock", title: "Locks to monitor", multiple:true, required:true
        
             input "debugOutput", "bool", title: "Enable debug logging?", defaultValue: true, displayDuringSetup: false, required: false
         }
@@ -68,45 +68,65 @@ def updated() {
 }
 
 def initialize() {
-	subscribe(contactSensors, "contact.open", contactOpenHandler)
-	subscribe(contactSensors, "contact.closed", contactClosedHandler)
+	subscribe(locks, "lock.locked", lockLockedHandler)
+	subscribe(locks, "lock.unlocked", lockUnlockedHandler)
+	def virtualLock = getChildDevice(state.lockDevice)
+	subscribe(virtualLock, "lock.locked", virtualLockedHandler)
+	subscribe(virtualLock, "lock.unlocked", virtualUnlockedHandler)
 }
 
-def contactOpenHandler(evt) {
-	logDebug "Contact opened, setting virtual device as open"
-
-	def device = getChildDevice(state.contactDevice)
-	device.open()
+def virtualLockedHandler(evt) {
+	if (!state.bypass) {
+		locks*.lock()
+	}
+	state.bypass = false
 }
 
-def contactClosedHandler(evt) {
-	def device = getChildDevice(state.contactDevice)
-	def totalClosed = 0
-	contactSensors.each { it ->
-		if (it.currentValue("contact") == "closed")
+def virtualUnlockedHandler(evt) {
+	if (!state.bypass) {
+		locks*.unlock()
+	}
+	state.bypass = false
+}
+
+def lockUnlockedHandler(evt) {
+	logDebug "Lock unlocked, setting virtual device as unlocked"
+
+	def device = getChildDevice(state.lockDevice)
+	state.bypass = true
+	device.unlock()
+}
+
+def lockLockedHandler(evt) {
+	def device = getChildDevice(state.lockDevice)
+	def totalLocked = 0
+	locks.each { it ->
+		if (it.currentValue("lock") == "locked")
 		{
-			totalClosed++
+			totalLocked++
 		}
 	}
 	
-	if (totalClosed < contactSensors.size())
+	if (totalLocked < locks.size())
 	{
-		logDebug "Contact closed, all closed, leaving virtual device as open"
-		device.open()
+		logDebug "Lock locked, not all locked, leaving virtual device as unlocked"
+		state.bypass = true
+		device.unlock()
 	}
 	else
 	{
-		logDebug "Contact closed, all closed, setting virtual device as closed"
-		device.close()
+		logDebug "Lock locked, all locked, setting virtual device as locked"
+		state.bypass = true
+		device.lock()
 	}
 }
 
 def createOrUpdateChildDevice() {
 	def childDevice = getChildDevice("contactgroup:" + app.getId())
-    if (!childDevice || state.contactDevice == null) {
+    if (!childDevice || state.lockDevice == null) {
         logDebug "Creating child device"
-		state.contactDevice = "contactgroup:" + app.getId()
-		addChildDevice("hubitat", "Virtual Contact Sensor", "contactgroup:" + app.getId(), 1234, [name: app.label, isComponent: false])
+		state.lockDevice = "contactgroup:" + app.getId()
+		addChildDevice("hubitat", "Virtual Lock", "contactgroup:" + app.getId(), 1234, [name: app.label, isComponent: false])
     }
 	else if (childDevice && childDevice.name != app.label)
 		childDevice.name = app.label

@@ -1,6 +1,6 @@
 /**
  *
- *  Contact Sensor Groups
+ *  Device Groups
  *
  *  Copyright 2020 Dominick Meglio
  *
@@ -9,10 +9,10 @@
  */
  
 definition(
-    name: "Contact Sensor Groups",
+    name: "Device Groups",
     namespace: "dcm.contactgroups",
     author: "Dominick Meglio",
-    description: "Allows you to group contact sensors together into a single virtual device",
+    description: "Allows you to group devices together into a single virtual device",
     category: "My Apps",
     iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
     iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png",
@@ -42,12 +42,14 @@ def mainPage() {
 			section("${app.label}") {
 				paragraph "Provides options for combining multiple contact sensors into a single device so you can receive a single status"
 			}
-			section("Contact Groups Child Apps") {
+			section("Child Apps") {
 				app(name: "contactApp", appName: "Contact Sensor Group Child", namespace: "dcm.contactgroups", title: "Add a new Contact Sensor Group", multiple: true)
+				app(name: "lockApp", appName: "Lock Group Child", namespace: "dcm.contactgroups", title: "Add a new Lock Group", multiple: true)
 			}
 			section("General") {
        			label title: "Enter a name for parent app (optional)", required: false
  			}
+			displayFooter()
 		}
 	}
 }
@@ -61,3 +63,15 @@ def isInstalled() {
 		}
   	}
 }     
+
+def displayFooter(){
+	section() {
+		paragraph getFormat("line")
+		paragraph "<div style='color:#1A77C9;text-align:center'>Device Groups<br><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7LBRPJRLJSDDN&source=url' target='_blank'><img src='https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg' border='0' alt='PayPal Logo'></a><br><br>Please consider donating. This app took a lot of work to make.<br>If you find it valuable, I'd certainly appreciate it!</div>"
+	}       
+}
+
+def getFormat(type, myText=""){			// Modified from @Stephack Code   
+    if(type == "line") return "<hr style='background-color:#1A77C9; height: 1px; border: 0;'>"
+    if(type == "title") return "<h2 style='color:#1A77C9;font-weight: bold'>${myText}</h2>"
+}
