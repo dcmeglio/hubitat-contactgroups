@@ -18,7 +18,8 @@
 				}
 			],
 			"location": "https://raw.githubusercontent.com/dcmeglio/hubitat-contactgroups/master/apps/Contact_Sensor_Groups.groovy",
-			"required": true
+			"required": true,
+			"primary": true
 		},
 		{
 			"id" : "2e879e0e-9186-48bc-8891-a174335be0cf",
