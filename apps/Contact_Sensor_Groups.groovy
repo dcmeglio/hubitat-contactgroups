@@ -45,6 +45,7 @@ def mainPage() {
 			section("Child Apps") {
 				app(name: "contactApp", appName: "Contact Sensor Group Child", namespace: "dcm.contactgroups", title: "Add a new Contact Sensor Group", multiple: true)
 				app(name: "lockApp", appName: "Lock Group Child", namespace: "dcm.contactgroups", title: "Add a new Lock Group", multiple: true)
+				app(name: "leakApp", appName: "Leak Sensor Group Child", namespace: "dcm.contactgroups", title: "Add a new Leak Sensor Group", multiple: true)
 			}
 			section("General") {
        			label title: "Enter a name for parent app (optional)", required: false

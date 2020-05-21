@@ -2,9 +2,9 @@
 	"packageName": "Device Groups",
 	"minimumHEVersion": "2.1.9",
 	"author": "Dominick Meglio",
-	"version": "1.3.0",
-	"dateReleased": "2020-04-26",
-	"releaseNotes": "Renamed to Device Groups and added a new grouping for locks.",
+	"version": "1.4.0",
+	"dateReleased": "2020-05-21",
+	"releaseNotes": "Added a new grouping for leak sensors.",
 	"documentationLink": "https://github.com/dcmeglio/hubitat-contactgroups/blob/master/README.md",
 	"apps" : [
 		{
@@ -33,6 +33,13 @@
 			"name": "Lock Group Child",
 			"namespace": "dcm.contactgroups",
 			"location": "https://raw.githubusercontent.com/dcmeglio/hubitat-contactgroups/master/apps/Lock_Group_Child.groovy",
+			"required": true
+		},
+		{
+			"id" : "757d5344-2a10-450b-bf21-a0275bd4f881",
+			"name": "Leak Sensor Group Child",
+			"namespace": "dcm.contactgroups",
+			"location": "https://raw.githubusercontent.com/dcmeglio/hubitat-contactgroups/master/apps/Leak_Sensor_Group_Child.groovy",
 			"required": true
 		}
 	]
