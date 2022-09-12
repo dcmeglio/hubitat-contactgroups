@@ -70,28 +70,55 @@ def updated() {
 def initialize() {
 	subscribe(contactSensors, "contact.open", contactOpenHandler)
 	subscribe(contactSensors, "contact.closed", contactClosedHandler)
+    def device = getChildDevice(state.contactDevice)
+	device.sendEvent(name: "TotalCount", value: contactSensors.size())
 }
 
 def contactOpenHandler(evt) {
 	logDebug "Contact opened, setting virtual device as open"
 
 	def device = getChildDevice(state.contactDevice)
-	device.open()
-}
-
-def contactClosedHandler(evt) {
-	def device = getChildDevice(state.contactDevice)
-	def totalClosed = 0
+    def totalOpen = 0
+    def totalClosed = 0
 	contactSensors.each { it ->
+		if (it.currentValue("contact") == "open")
+		{
+			totalOpen++
+		}
+    }
+    contactSensors.each { it ->
 		if (it.currentValue("contact") == "closed")
 		{
 			totalClosed++
 		}
 	}
-	
+    device.sendEvent(name: "TotalClosed", value: totalClosed, descriptionText: "There are ${totalClosed} windows closed")
+    device.sendEvent(name: "TotalOpen", value: totalOpen,descriptionText: "There are ${totalOpen} windows open")
+	device.open()
+}
+
+def contactClosedHandler(evt) {
+	def device = getChildDevice(state.contactDevice)
+    def totalOpen = 0
+    def totalClosed = 0
+	contactSensors.each { it ->
+		if (it.currentValue("contact") == "open")
+		{
+			totalOpen++
+		}
+    }
+    contactSensors.each { it ->
+		if (it.currentValue("contact") == "closed")
+		{
+			totalClosed++
+		}
+    }
+    device.sendEvent(name: "TotalClosed", value: totalClosed, descriptionText: "There are ${totalClosed} windows closed")
+    device.sendEvent(name: "TotalOpen", value: totalOpen,descriptionText: "There are ${totalOpen} windows open")
+    
 	if (totalClosed < contactSensors.size())
 	{
-		logDebug "Contact closed, all closed, leaving virtual device as open"
+		logDebug "Contact closed, not all closed, leaving virtual device as open"
 		device.open()
 	}
 	else
@@ -106,7 +133,7 @@ def createOrUpdateChildDevice() {
     if (!childDevice || state.contactDevice == null) {
         logDebug "Creating child device"
 		state.contactDevice = "contactgroup:" + app.getId()
-		addChildDevice("hubitat", "Virtual Contact Sensor", "contactgroup:" + app.getId(), 1234, [name: app.label, isComponent: false])
+		addChildDevice("FriedCheese2006", "Virtual Contact Group", "contactgroup:" + app.getId(), 1234, [name: app.label, isComponent: false])
     }
 	else if (childDevice && childDevice.name != app.label)
 		childDevice.name = app.label
