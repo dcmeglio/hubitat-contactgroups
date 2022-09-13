@@ -6,6 +6,8 @@
  *
  *	If you find this useful, donations are always appreciated 
  *	https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7LBRPJRLJSDDN&source=url
+ *
+ *      FriedCheese 	v1.1     Updated to track total sensor count, open count, and closed count for each group.
  */
  
 definition(
